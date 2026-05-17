@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %} Submit Assignment{% endblock %}
+
+{% block content %}
+    <div style="text-align: center;">
+        <h2 style="color: green;" >Submit Assignment</h2>
+        <h3>{{message}}</h3>
+        <p>course: <strong>{{course}}</strong></p>
+        <a href="/courses">Back To Courses</a>
+    </div>
+{% endblock %}

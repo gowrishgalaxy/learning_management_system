@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ course.title }} - LearnbyTech
+{% endblock %}
+
+{% block content %}
+<div class="course-detail">
+    <p class="course-detail-back">
+        <a href="{{ url_for('courses_list') }}">Back to courses</a>
+    </p>
+
+    <div class="course-detail-card">
+        <h1>{{ course.title }}</h1>
+        <p class="course-detail-teacher">By {{ course.teacher.username if course.teacher else 'Unknown' }}</p>
+        <p class="course-detail-desc">{{ course.description or '-' }}</p>
+
+        {% if session.get('role') == 'student' %}
+            <div class="course-detail-student">
+                {% if user_enrollment %}
+                    <p>Your status: {{ user_enrollment.status }}</p>
+                    <p><a href="{{ url_for('my_enrollments') }}">My Enrollments</a></p>
+                {% else %}
+                    <form method="post" action="{{ url_for('course_enroll', id=course.id) }}">
+                        <button type="submit" class="btn-enroll">Enroll</button>
+                    </form>
+                    <p><a href="{{ url_for('my_enrollments') }}">My Enrollments</a></p>
+                {% endif %}
+            </div>
+        {% endif %}
+
+        {% if session.get('role') == 'teacher' and course.teacher_id == session.get('user_id') %}
+            <div class="course-detail-teacher-actions">
+                <a href="{{ url_for('course_enrollments', id=course.id) }}">View Enrollments</a>
+                <a href="{{ url_for('videos_list', id=course.id) }}">Videos</a>
+                <a href="{{ url_for('course_edit', id=course.id) }}">Edit</a>
+                <a href="{{ url_for('course_delete', id=course.id) }}" onclick="return confirm('Delete this course?')">Delete</a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

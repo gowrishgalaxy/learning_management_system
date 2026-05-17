@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}
+Enrollments - {{ course.title }}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="course-enrollments-page">
+        <h1>
+            Enrollments for 
+            <a href="{{ url_for('course_detail', id=course.id) }}">
+                {{ course.title }}
+            </a>
+        </h1>
+
+        {% if enrollments %}
+        <div class="course-enrollments-list">
+            <div class="course-enrollments-row course-enrollments-row-head">
+                <span>Student</span>
+                <span>Status</span>
+                <span>Date</span>
+                <span>Actions</span>
+            </div>
+
+            {% for e in enrollments %}
+            <div class="course-enrollments-row">
+                <span>{{ e.user.username }} ({{ e.user.email }})</span>
+                <span>{{ e.status }}</span>
+                <span>{{ e.created_at.strftime('%Y-%m-%d') if e.created_at else '-' }}</span>
+                <span class="course-enrollments-actions">
+                    {% if e.status == 'pending' %}
+                    <form method="post" action="{{ url_for('enrollment_approve', id=e.id) }}" style="display: inline;">
+                        <button type="submit" class="btn-approve">Approve</button>
+                    </form>
+                    <form method="post" action="{{ url_for('enrollment_reject', id=e.id) }}" style="display: inline;">
+                        <button type="submit" class="btn-reject">Reject</button>
+                    </form>
+                    {% else %}
+                    <span class="course-enrollments-none">N/A</span>
+                    {% endif %}
+                </span>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="course-enrollments-empty">No enrollments yet.</p>
+        {% endif %}
+
+        <p class="course-enrollments-back">
+            <a href="{{ url_for('course_detail', id=course.id) }}">Back to Course</a>
+            <a href="{{ url_for('courses_list') }}">Courses</a>
+        </p>
+    </div>
+</div>
+{% endblock %}

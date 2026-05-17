@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}
+My Enrollments - LearnbyTech
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="enrollments-page">
+        <h1>My Enrollments</h1>
+
+        {% if enrollments %}
+        <div class="enrollments-list">
+            <div class="enrollments-row enrollments-row-head">
+                <span>Course</span>
+                <span>Status</span>
+                <span>Date</span>
+            </div>
+
+            {% for e in enrollments %}
+            <div class="enrollments-row">
+                <span>
+                    <a href="{{ url_for('course_detail', id=e.course.id) }}">
+                        {{ e.course.title }}
+                    </a>
+                </span>
+                <span>{{ e.status }}</span>
+                <span>
+                    {{ e.created_at.strftime('%Y-%m-%d') if e.created_at else '-' }}
+                </span>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="enrollments-empty">
+            You have no enrollments.
+            <a href="{{ url_for('courses_list') }}">
+                Browse Courses
+            </a>
+        </p>
+        {% endif %}
+
+        <p class="enrollments-back">
+            <a href="{{ url_for('courses_list') }}">Back to Courses</a>
+        </p>
+    </div>
+</div>
+{% endblock %}

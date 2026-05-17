@@ -1,0 +1,28 @@
+{%extends "base.html" %}
+
+{% block title %}Student Dashboard - LearnByTech{% endblock %}
+{% block content %}
+<div class="dashboard-student">
+    <div class="dashboard-welcome">
+        <h1>
+            Hello, {{ session.get('username', 'Student') }} !
+        </h1>
+        <p>
+            Ready to learn today?
+        </p>
+    </div>
+
+    <div class="dashboard-actions">
+        <a href="{{ url_for('courses_list') }}" class="action-card">
+            <div class="action-card-icon">📚</div>
+            <h2>Browse Courses</h2>
+            <p>Explore and enroll in new courses</p>
+        </a>
+        <a href="{{ url_for('my_enrollments') }}" class="action-card">
+            <div class="action-card-icon">📋</div>
+            <h2>My Enrollments</h2>
+            <p>View your enrolled courses and status</p>
+        </a>
+    </div>
+</div>
+{% endblock %}

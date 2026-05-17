@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}
+Edit {{ course.title }} - LearnbyTech
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="course-edit-page">
+        <div class="course-edit-left">
+            <h1>Edit Course</h1>
+            <img src="{{ url_for('static', filename='images/login-illustration.png.png') }}" alt="Edit course">
+        </div>
+
+        <div class="course-edit-right">
+            <form method="post" action="{{ url_for('course_edit', id=course.id) }}" class="course-edit-form">
+                {% if error %}
+                <p style="color: #c00; margin: 0 0 16px 0; font-size: 0.9rem;">{{ error }}</p>
+                {% endif %}
+
+                <div class="form-group">
+                    <label for="title">Title</label>
+                    <input type="text" id="title" name="title" value="{{ course.title }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea id="description" name="description" rows="4" required>{{ course.description or '' }}</textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="teacher_id">Teacher</label>
+                    <select id="teacher_id" name="teacher_id" required>
+                        {% for teacher in teachers %}
+                        <option value="{{ teacher.id }}" {% if teacher.id == course.teacher_id %}selected{% endif %}>{{ teacher.username }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <button type="submit" class="btn-course-edit-submit">Update Course</button>
+
+                <p class="course-edit-links">
+                    <a href="{{ url_for('course_detail', id=course.id) }}">Back to Course</a>
+                    <a href="{{ url_for('courses_list') }}">Cancel</a>
+                </p>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

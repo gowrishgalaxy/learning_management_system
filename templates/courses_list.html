@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}
+Courses - LearnbyTech
+{% endblock %}
+
+{% block content %}
+<div class="courses-page">
+    <div class="courses-header">
+        <div class="courses-header-text">
+            <h1>Browse Courses</h1>
+            <p>Explore and enroll in courses</p>
+        </div>
+        {% if session.get('role') == 'teacher' %}
+            <a href="{{ url_for('course_create') }}" class="btn-add-course">Add Course</a>
+        {% endif %}
+    </div>
+
+    {% if courses %}
+        <div class="courses-grid">
+            {% for course in courses %}
+                <div class="course-card">
+                    <h2>
+                        <a href="{{ url_for('course_detail', id=course.id) }}">{{ course.title }}</a>
+                    </h2>
+                    <p class="course-description">
+                        {{ (course.description or '-')[:120] }}
+                        {% if course.description and course.description|length > 120 %}...{% endif %}
+                    </p>
+                    <p class="course-teacher">
+                        By {{ course.teacher.username if course.teacher else 'Unknown' }}
+                    </p>
+                    <div class="course-actions">
+                        {% if session.get('role') == 'teacher' and course.teacher_id == session.get('user_id') %}
+                            <a href="{{ url_for('course_enrollments', id=course.id) }}">Enrollments</a>
+                            <a href="{{ url_for('course_edit', id=course.id) }}">Edit</a>
+                            <a href="{{ url_for('course_delete', id=course.id) }}" onclick="return confirm('Delete this course?')">Delete</a>
+                        {% else %}
+                            <a href="{{ url_for('course_detail', id=course.id) }}">View</a>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="courses-empty">
+            <p>No courses yet.</p>
+            {% if session.get('role') == 'teacher' %}<a href="{{ url_for('course_create') }}" class="btn-add-course">Create a course</a>{% else %}<p>Check back later for new courses.</p>{% endif %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

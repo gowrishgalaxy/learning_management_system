@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}
+Teacher Dashboard - LearnbyTech
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="dashboard-teacher">
+        <div class="dashboard-welcome">
+            <h1>Hello, {{ session.get('username', 'Teacher') }} !</h1>
+            <p>Manage your courses</p>
+        </div>
+
+        <div class="dashboard-actions">
+            <a href="{{ url_for('courses_list') }}" class="action-card">
+                <div class="action-card-icon">📚</div>
+                <h2>View Courses</h2>
+                <p>View and manage your courses</p>
+            </a>
+
+            <a href="{{ url_for('course_create') }}" class="action-card">
+                <div class="action-card-icon">➕</div>
+                <h2>Add Course</h2>
+                <p>Create a new course</p>
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

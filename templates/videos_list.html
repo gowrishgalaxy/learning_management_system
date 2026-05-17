@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}
+Videos - {{ course.title }}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="videos-page">
+        <div class="videos-header">
+            <h1>
+                Videos for
+                <a href="{{ url_for('course_detail', id=course.id) }}">
+                    {{ course.title }}
+                </a>
+            </h1>
+
+            {% if session.get('role') == 'teacher' and course.teacher_id == session.get('user_id') %}
+            <a href="{{ url_for('video_create', id=course.id) }}" class="videos-add-btn">
+                Add Video
+            </a>
+            {% endif %}
+        </div>
+
+        {% if videos %}
+        <div class="videos-grid">
+            {% for v in videos %}
+            <div class="video-card">
+                <div class="video-card-icon">▶</div>
+                <h3>{{ v.title }}</h3>
+                <a href="{{ url_for('static', filename=v.file_path) }}" target="_blank" class="video-watch">Watch</a>
+
+                {% if session.get('role') == 'teacher' and course.teacher_id == session.get('user_id') %}
+                <form method="post" action="{{ url_for('video_delete', id=v.id) }}" style="margin: 0; display: flex;">
+                    <button type="submit" onclick="return confirm('Delete this video?')" class="video-delete" style="background: none; border: none; cursor: pointer; padding: 0; font-family: inherit;">
+                        Delete
+                    </button>
+                </form>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="videos-empty">
+            <p>No videos yet.</p>
+        </div>
+        {% endif %}
+
+        <div class="videos-footer">
+            <a href="{{ url_for('course_detail', id=course.id) }}">Back to Course</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

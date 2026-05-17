@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}Users - LearnbyTech{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="users-page">
+        <h1>Users</h1>
+
+        {% if users %}
+        <div class="users-list">
+            <div class="users-row users-row-head">
+                <span>Username</span>
+                <span>Email</span>
+                <span>Role</span>
+                <span>Actions</span>
+            </div>
+
+            {% for user in users %}
+            <div class="users-row">
+                <span>
+                    <a href="{{ url_for('user_detail', id=user.id) }}">
+                        {{ user.username }}
+                    </a>
+                </span>
+                <span>{{ user.email }}</span>
+                <span>{{ user.role }}</span>
+                <span class="users-actions">
+                    <a href="{{ url_for('user_edit', id=user.id) }}">Edit</a>
+                    <a href="{{ url_for('user_delete', id=user.id) }}" onclick="return confirm('Are you sure?')">Delete</a>
+                </span>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="users-empty">
+            No users yet.
+            <a href="{{ url_for('register') }}">Register</a>
+        </p>
+        {% endif %}
+
+        <p class="users-register">
+            <a href="{{ url_for('register') }}">Register</a>
+        </p>
+    </div>
+</div>
+{% endblock %}

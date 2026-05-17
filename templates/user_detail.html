@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ user.username }} - LearnbyTech
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="user-detail">
+        <div class="user-detail-list">
+            <div class="user-detail-row user-detail-row-head">
+                <span>Username</span>
+                <span>Email</span>
+                <span>Role</span>
+                <span>Actions</span>
+            </div>
+
+            <div class="user-detail-row">
+                <span>{{ user.username }}</span>
+                <span>{{ user.email }}</span>
+                <span>{{ user.role }}</span>
+                <span class="user-detail-actions">
+                    <a href="{{ url_for('user_edit', id=user.id) }}">Edit</a>
+                    <a href="{{ url_for('user_delete', id=user.id) }}" onclick="return confirm('Are you sure?')">Delete</a>
+                </span>
+            </div>
+        </div>
+        <p class="user-detail-back">
+            <a href="{{ url_for('users_list') }}">Back to Users</a>
+        </p>
+    </div>
+</div>
+{% endblock %}

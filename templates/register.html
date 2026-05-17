@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}
+Register - LearnbyTech
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="register-page">
+        <div class="register-left">
+            <h1>Join LearnbyTech</h1>
+            <img src="{{ url_for('static', filename='images/login-illustration.png.png') }}" alt="Student learning online">
+        </div>
+
+        <div class="register-right">
+            <form method="post" class="register-form">
+                {% if error %}
+                <p class="register-error">{{ error }}</p>
+                {% endif %}
+
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" value="{{ username or '' }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" value="{{ email or '' }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required minlength="4" maxlength="8">
+                </div>
+
+                <div class="form-group">
+                    <label for="role">Role</label>
+                    <select id="role" name="role" required>
+                        <option value="student" {% if role == 'student' %}selected{% endif %}>Student</option>
+                        <option value="teacher" {% if role == 'teacher' %}selected{% endif %}>Teacher</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn-register-submit">Register</button>
+
+                <p class="register-login">
+                    <a href="{{ url_for('login') }}">Already have an account? Login</a>
+                </p>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
